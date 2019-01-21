@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/phinease/CLionProjects/bridge_ai_test/ai.h
+
+/Users/phinease/CLionProjects/bridge_ai_test/game.h
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+time.h
+-
+ai.h
+/Users/phinease/CLionProjects/bridge_ai_test/ai.h
+
+/Users/phinease/CLionProjects/bridge_ai_test/main.c
+process.h
+/Users/phinease/CLionProjects/bridge_ai_test/process.h
+
+/Users/phinease/CLionProjects/bridge_ai_test/process.h
+game.h
+/Users/phinease/CLionProjects/bridge_ai_test/game.h
+
