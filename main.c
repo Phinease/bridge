@@ -2,6 +2,7 @@
 
 int run[2]={-1,-1};
 
+
 int main(){
     srand(1);
     int wrong;

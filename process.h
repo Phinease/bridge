@@ -48,7 +48,8 @@ void all()
     printf("Result: Games: %d times\t WE win rate: %.2f\tNS win rate: %.2f\n",run[1],(double) (data[0]*1000 / run[1])/1000,(double) (data[1]*1000 / run[1])/1000);
     end_t=clock();
     total_t=(double)(end_t-start_t)/CLOCKS_PER_SEC;
-    printf("This spends %5.4f seconds, %4.3fs per game.",total_t,total_t/run[1]);
+    printf("This spends %5.4f seconds, %4.3fs per game.\n",total_t,total_t/run[1]);
+    printf("%d deviations have happened.\n",print_func[3]);
 }
 
 void ask()
@@ -76,7 +77,7 @@ void ask()
         printf("Wrong enter, retry.\n");
         scanf("%d",&print_func[0]);
     }
-    printf("Would you like to see the errors?\n");
+    printf("Would you like to check deviation?\n");
     printf("0 for yes, 1 for no\n");
     scanf("%d",&print_func[1]);
     while(print_func[1] <0 || print_func[1] > 1){
@@ -85,6 +86,15 @@ void ask()
         }
         printf("Wrong enter, retry.\n");
         scanf("%d",&print_func[1]);
+    }
+    printf("How many percentage of deviation?\n");
+    scanf("%d",&print_func[2]);
+    while(print_func[2] <0 || print_func[2] > 100){
+        while ((wrong = getchar()) != EOF && wrong != '\n'){
+            ;
+        }
+        printf("Wrong enter, retry.\n");
+        scanf("%d",&print_func[2]);
     }
 }
 

@@ -24,12 +24,13 @@ char *Height[14]={"?","2","3","4","5","6","7","8","9","T","J","Q","K","A"};
 
 
 int data[2]={0};
-int print_func[3]={1,1,1};
+int print_func[4]={1,1,1,0};
 
 
 void initialization();
 void deal();
 void bid();
+void card(int num_user,int print_func);
 void bid_user(int user_num);
 void print_card(int num_user);
 void first_play_cards(int num_user);
@@ -39,8 +40,9 @@ void compare_cards();
 void show();
 void last_round();
 void tricks();
-int win();
 void error_show(int random,int user_num);
+void check(int user_num,float p,int w,int last_winner);
+int win();
 
 
 void initialization(){
@@ -330,7 +332,7 @@ void first_play_cards(int num_user)
     if(print_func[0]==1) printf("Round%d -- First\n",process+1);
     print_card(num_user);
     if(player_random[num_user]==2) {
-        card = simulation(1000,num_user);
+        card = simulation(5000,num_user);
     }else if (player_random[num_user]==1){
         card = randomPlayer(num_user,0);
         if(print_func[0]==1) printf("random: %d\n\n",card);
@@ -358,7 +360,7 @@ void play_card(int num_user)
     if(print_func[0]==1) printf("Round%d -- %s\n",process+1,Suits_fullname[local_suit]);
     print_card(num_user);
     if(player_random[num_user]==2) {
-        card = simulation(1000,num_user);
+        card = simulation(5000,num_user);
     }else if (player_random[num_user]==1){
         card = randomPlayer(num_user,1);
         if(print_func[0]==1) printf("random: %d\n\n",card);
@@ -404,7 +406,7 @@ void play_card(int num_user)
 
 void compare_cards()
 {
-    int i,flag=0,max=0;
+    int i,flag=0,max=0,last_winner;
     int verified[4]={-1,-1,-1,-1};
     for(i=0;i<4;i++){
         if(Cards_played[i]%4==main_suit){
@@ -419,6 +421,7 @@ void compare_cards()
             }
         }
     }
+    last_winner=winner;
     for(i=0;i<4;i++){
         if(verified[i]==0){
             winner=i;
@@ -429,6 +432,21 @@ void compare_cards()
         }
     }
     if(print_func[0]==1) printf("%s has won.\n",Users_name[winner]);
+    if(process!=12){
+        for(i=0;i<4;i++){
+            if(persentage[i]>print_func[2] && (winner!=i && winner != (i+2)%4)) {
+                if(print_func[1]==0){
+                    printf("Deviation estimated. Would you like to check?(0 for yes)\n");
+                    int yes;
+                    scanf("%d",&yes);
+                    if(yes == 0){
+                        check(i,persentage[i],winner,last_winner);
+                    }
+                }
+                print_func[3]++;
+            }
+        }
+    }
     //write_tour(winner);
     for(i=0;i<4;i++){
         Cards_played[i]=0;
@@ -497,6 +515,7 @@ void last_round()
         for(q=0;q<4;q++){
             for(k=0;k<13;k++){
                 if(Users_Nums[i][q][k]!=-1){
+                    if(i==winner) local_suit=q;
                     Cards_played[i]=Users_Nums[i][q][k]*4+q;
                     if(print_func[0]==1) printf("%c.%s%s\t",U_N[i],Suits_name[q],Height[Users_Nums[i][q][k]]);
                 }
@@ -508,7 +527,6 @@ void last_round()
     //system("read -p 'Press Enter to continue...'");
     //system("clear");
     //system("clear");
-
 }
 
 void tricks()
@@ -521,23 +539,25 @@ void tricks()
 }
 
 
-int StrToInt(const char *str)
-{
-    int n = 0;
-    while (*str != 0)
-    {
-        int c = *str - '0';
-        n = n * 10 + c;
-        ++str;
-    }
-    return n;
-}
-
 void error_show(int random,int user_num)
 {
     int c=card_num[random-1];
     printf("Error user %s:\n",Users_name[user_num]);
     printf("Random_player: %d\tCard: %d.%s%s\n\n",player_random[user_num],random,Suits_name[c%4],Height[c/4]);
+    card(0,1); card(1,1); card(2,1); card(3,1);
+    system("read -p 'Press Enter to continue...'");
+}
+
+
+void check(int user_num,float p,int w,int last_winner)
+{
+    printf("%s Robot: %.2f%%\twinner: %s\n",Users_name[user_num],p,Users_name[w]);
+    printf("W: %s%s\t",Suits_name[Cards_played[0]%4],Height[Cards_played[0]/4]);
+    printf("N: %s%s\t",Suits_name[Cards_played[1]%4],Height[Cards_played[1]/4]);
+    printf("E: %s%s\t",Suits_name[Cards_played[2]%4],Height[Cards_played[2]/4]);
+    printf("S: %s%s\n",Suits_name[Cards_played[3]%4],Height[Cards_played[3]/4]);
+    printf("Last winner is %s\n",Users_name[last_winner]);
+    printf("Local: %s\n",Suits_fullname[local_suit]);
     card(0,1); card(1,1); card(2,1); card(3,1);
     system("read -p 'Press Enter to continue...'");
 }

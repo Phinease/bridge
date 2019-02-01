@@ -8,6 +8,7 @@
 #endif //BRIDGE_AI_H
 
 
+float persentage[4]={0,0,0,0};
 struct simulate{
     int u_card[4][4][13];
     int p_card[4];
@@ -290,6 +291,7 @@ int simulation(int times,int player)
             result=i;
         }
     }
+    persentage[player]=((float)max/(float)times)*100;
     if (result==0){
         memcpy(p1,p2, sizeof(b));
         result=min_card(player);
