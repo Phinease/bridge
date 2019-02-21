@@ -11,6 +11,6 @@ How to install:
 
       make ./
 
-      ./bridge_ai_debug
+      ./bridge_data_analyse
 
 Or you can run directly the exec file if it's possible.
