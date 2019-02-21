@@ -1,3 +1,3 @@
-/Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles/bridge_ai_debug.dir
+/Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles/Bridge_data_analyse.dir

@@ -1,301 +1,293 @@
- //
-// Created by Phinease on 2018-12-21.
+//
+// Created by Phinease on 2019-02-11.
 //
 
-#ifndef BRIDGE_AI_H
-#define BRIDGE_AI_H
+#ifndef BRIDGE_DATA_ANALYSE_AI_H
+#define BRIDGE_DATA_ANALYSE_AI_H
 
-#endif //BRIDGE_AI_H
+#endif //BRIDGE_DATA_ANALYSE_AI_H
 
 
-float persentage[4]={0,0,0,0};
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+
+
+/*
+ * Rule basic: card_num based on a base 4
+ * C/D/H/S(/N) -> 0/1/2/3(/4)
+ * "2/3/4/5/6/7/8/9/T/J/Q/K/A" -> 0/1/2/3/4/5/6/7/8/9/10/11/12
+ * num_user:
+ * 'W','N','E','S' -> "West","North","East","South" -> 0/1/2/3
+ * -1 for all kinds is non-existence.
+ */
+
+clock_t start_simulate, end_simulate; //time_counting
+
 struct simulate{
-    int u_card[4][4][13];
-    int p_card[4];
-    int c_num[13];
     int suit;
-    int num_user;
     int flag;
+    int c_played[4];
+    int num_user;
+};
+struct card_game_data{
+    int card_real[52];
+    int card_round[52];
+    float card_simu[52];
 };
 
-struct simulate a,b,*p1=&a,*p2=&b;
-extern int Users_Nums[4][4][13],local_suit,Cards_played[4];
+struct card_game_data* p_of_data[1000];
+struct simulate original,test;
+struct simulate *p_orig=&original, *p_test=&test;
 
 
-int simulation(int times,int player);
-int randomPlayer (int player, int firstOrNot);
+extern int Users_Nums[4][13],local_suit,Cards_played[4];
+extern int process;
+extern int print_func[4];
 
 
-int randomPlayer (int player, int firstOrNot) {
-    int nbCard = 0, localNbCard = 0, result;
-    for(int i =0; i < 4; i++) {
-        for(int j =0; j<13; j++) {
-            if(Users_Nums[player][i][j] != -1) {
-                nbCard++;
-            }
+float per_devia[4]={0,0,0,0};
+int game_time=0;
+int c_num[13];
+
+
+int simulation(int times,int num_user);
+int random_player(int *p,int flag);
+void c();
+int cc(int num_user);
+int min_card();
+int rp(int flag);
+
+
+
+int random_player (int *p,int flag){ //random num_user for the game
+    int *p2=p;
+    int nb_card=0,local_card=0;
+    int i,result;
+    if(flag==1){ // flag - 1 means first to play
+        for(i=0;i<13;i++){
+            if(*p++==-1) break;
+            nb_card++;
         }
-    }
-    if(firstOrNot == 0) {
-        result = rand()%nbCard+1;
+        result=(rand()%nb_card);
+        //printf("1.%d\n",nb_card);
         return result;
     }
     else {
-        for(int i =0; i < 13; i++) {
-            if(Users_Nums[player][local_suit][i] != -1) {
-                localNbCard++;
+        for(i=0;i<13;i++){
+            if(*p++%4==local_suit){
+                local_card++;
             }
         }
-        if(localNbCard==0) {
-            result = (rand()%nbCard)+1;
-            return result;
-        }
-        else {
-            nbCard = 0;
-            for(int i =0; i < local_suit; i++) {
-                for(int j =0; j<13; j++) {
-                    if(Users_Nums[player][i][j] != -1) {
-                        nbCard++;
-                    }
-                }
-            }
-            result = nbCard + (rand()%localNbCard)+1;
-            return result;
-        }
-    }
-}
-
-int rp (int player, int firstOrNot,int suit) {
-    int nbCard = 0, localNbCard = 0, result;
-    for(int i =0; i < 4; i++) {
-        for(int j =0; j<13; j++) {
-            if(a.u_card[player][i][j] != -1) {
-                nbCard++;
+        nb_card=0;
+        for(i=0;i<13;i++){
+            if(*p2++%4<local_suit){
+                nb_card++;
+            }else{
+                break;
             }
         }
-    }
-    if(firstOrNot == 0) {
-        result = rand()%nbCard+1;
+        if(local_card==0){
+            result=rand()%(13-process);
+        }else{
+            result=nb_card+(rand()%local_card);
+        }
+        //printf("\n2.%d %d\n",nb_card,local_card);
         return result;
-    }
-    else {
-        for(int i =0; i < 13; i++) {
-            if(a.u_card[player][suit][i] != -1) {
-                localNbCard++;
-            }
-        }
-        if(localNbCard==0) {
-            result = (rand()%nbCard)+1;
-            return result;
-        }
-        else {
-            nbCard = 0;
-            for(int i =0; i < suit; i++) {
-                for(int j =0; j<13; j++) {
-                    if(a.u_card[player][i][j] != -1) {
-                        nbCard++;
-                    }
-                }
-            }
-            result = nbCard + (rand()%localNbCard) +1;
-            return result;
-        }
     }
 }
 
 
-
-void wc(int num_user, int card)
+int rp(int flag)
 {
-    int i,q;
-    for(i=0;i<4;i++){
-        for(q=0;q<13;q++){
-            if(i+a.u_card[num_user][i][q]*4==a.c_num[card-1]){
-                a.u_card[num_user][i][q]=-1;
+    c();
+    int nb_card=0,local_card=0;
+    int i,result;
+    if(flag==1){ // flag - 1 means first to play
+        for(i=0;i<13;i++){
+            if(c_num[i]==-1) break;
+            nb_card++;
+        }
+        result=rand()%nb_card;
+        //printf("Nb_card.%d\n",nb_card);
+        test.suit=c_num[result]%4;
+        test.c_played[test.num_user]=c_num[result];
+        return result;
+    }
+    else {
+        for(i=0;i<13;i++){
+            if(c_num[i]%4==test.suit){
+                local_card++;
             }
         }
+        nb_card=0;
+        for(i=0;i<13;i++){
+            if(c_num[i]<test.suit){
+                nb_card++;
+            } else{
+                break;
+            }
+        }
+        if(local_card==0){
+            if(nb_card==0){
+                result=rand()%(13-process);
+            }else{
+                result=(rand()%nb_card);
+            }
+        }else{
+            result=nb_card+(rand()%local_card);
+        }
+        //printf("\n2.%d %d\n",nb_card,local_card);
+        test.c_played[test.num_user]=c_num[result];
+        return result;
+    }
+}
+
+
+void c() //calling cards
+{
+    test.num_user%=4;
+    int i,j=0;
+    for(i=0;i<13;i++){
+        c_num[i]=-1;
     }
     for(i=0;i<13;i++){
-        a.c_num[i]=-1;
-    }
-}
-
-
-
-void c()
-{
-    int num_user=a.num_user%4;
-    int i,q,k=0;
-    for(i=0;i<4;i++){
-        for(q=0;q<13;q++){
-            if(a.u_card[num_user][i][q]!=-1){
-                a.c_num[k]=i+a.u_card[num_user][i][q]*4;
-                k++;
-            }
+        if(Users_Nums[test.num_user][i]!=-1){
+            c_num[j++]=Users_Nums[test.num_user][i];
         }
     }
 }
 
 
-int fpc()
+int cc(int num_user) //compare cards
 {
-    int num_user=a.num_user%4;
-    int card;
-    a.suit = -1;
-    c();
-    card = rp(num_user,0,a.suit);
-    a.suit=a.c_num[card-1]%4;
-    a.p_card[num_user]=a.c_num[card-1];
-    wc(num_user,card);
-    return card;
-}
-
-
-
-int pc()
-{
-    int num_user=a.num_user%4;
-    int card;
-    c();
-    card = rp(num_user,1,a.suit);
-    a.p_card[num_user]=a.c_num[card-1];
-    wc(num_user,card);
-    return card;
-}
-
-
-
-int cc(int player)
-{
-    int i,max=0;
+    int i,max=-1;
     int winner_s=-1;
     int verified[4]={-1,-1,-1,-1};
     for(i=0;i<4;i++){
-        if(a.p_card[i]%4==a.suit){
-            verified[i]=a.p_card[i]/4;
+        if(test.c_played[i]%4==test.suit){
+            verified[i]=test.c_played[i]/4;
         }
     }
     for(i=0;i<4;i++){
-        if(verified[i]==0){
-            winner_s=i;
-            break;
-        }else if(verified[i]>max){
+        if(verified[i]>max){
             max=verified[i];
             winner_s=i;
         }
     }
     /*
+    printf("user played cards.\n");
     for(i=0;i<4;i++){
-        printf("user played cards.%d -- %s%s\n",i,Suits_name[a.p_card[i]%4],Height[a.p_card[i]/4]);
+        printf("%d -- %s%s\t",i,Suits_name[a.p_card[i]%4],Height[a.p_card[i]/4]);
     }
+    printf("\n");
      */
-    if (winner_s == player){
+    if (winner_s == num_user){
         return 1;
     } else {
         return 0;
     }
 }
 
-int min_card(int num_user)
+
+
+int min_card() //get the min card
 {
-    int min_suit[4]={0};
-    int i,j,min,result,suit=0;
-    for(i=0;i<4;i++)
-    {
-        min=14;
-        for(j=0;j<13;j++){
-            if(a.u_card[num_user][i][j]<min && a.u_card[num_user][i][j]!=-1){
-                min=a.u_card[num_user][i][j];
-            }
-        }
-        min_suit[i]=min;
+    //printf("Minimize activated.\n");
+    int i,count=0,min,result=-2;
+    for(i=0;i<13;i++){
+        if(Users_Nums[test.num_user][i]%4==test.suit && test.suit!=-1) count++;
     }
-    if(a.suit==-1){
-        min=14;
-        for(i=0;i<4;i++){
-            if(min_suit[i]<min){
-                min=min_suit[i];
-                suit=i;
+    min=13;
+    c();
+    if(count==0){
+        for(i=0;i<13;i++){
+            if(Users_Nums[test.num_user][i]!=-1 && Users_Nums[test.num_user][i]/4<min){
+                min=Users_Nums[test.num_user][i]/4;
+                count=Users_Nums[test.num_user][i];
             }
         }
-        result=min*4+suit;
-    }else if (min_suit[a.suit]!=14 && min_suit[a.suit]!=-1){
-        result=min_suit[a.suit]*4+a.suit;
+        //printf("Minimize non local\n");
+        for(i=0;i<13;i++){
+            if(c_num[i]==count){
+                return i;
+            }
+        }
+        printf("Error 7.\n");
+        return -1;
     }else{
-        min=14;
-        for(i=0;i<4;i++){
-            if(min_suit[i]<min){
-                min=min_suit[i];
-                suit=i;
+        for(i=0;i<13;i++){
+            if(c_num[i]/4<min && c_num[i]%4==test.suit){
+                min=c_num[i]/4;
+                result=i;
+                //printf("Now last result is %d\t",result);
             }
         }
-        result=min*4+suit;
+        //if(print_func[0]==1) printf("Minimize local -- %d.%c -- %d.%c\n",test.suit,Suits_name[test.suit],test.num_user,U_N[test.num_user]);
+        return result;
     }
-    int q,k=0;
-    for(i=0;i<4;i++){
-        for(q=0;q<13;q++){
-            if(a.u_card[num_user][i][q]!=-1){
-                a.c_num[k]=i+a.u_card[num_user][i][q]*4;
-                k++;
-            }
-            if(result==a.c_num[k-1]){
-                return k;
-            }
-        }
-    }
-    return -1;
 }
 
-int simulation(int times,int player)
-{
+/*
+    struct simulate{
+    int suit;
+    int flag;
+    int c_played[4];
+    int num_user;
+    };
+ */
+
+int simulation(int times,int num_user) { //simulation of Monte_carol
+    //float time;
+    int result_code=0;
     int win_num[13]={0};
-    int i,j,k;
+    int i,j;
+    original.flag=0;
     for(i=0;i<4;i++){
-        for(j=0;j<4;j++){
-            for(k=0;k<13;k++){
-                b.u_card[i][j][k]=Users_Nums[i][j][k];
-            }
+        original.c_played[i]=Cards_played[i];
+        if(Cards_played[i]==-1) original.flag++;
+    }
+    original.num_user=num_user;
+    original.suit=local_suit;
+    int card=-1,max=0,result=-1;
+    for(i=0;i<times;i++){
+        p_test=memcpy(p_test,p_orig, sizeof(struct simulate));
+        //start_simulate=clock();
+        if(test.flag==4){
+            card = rp(1);
+            test.num_user++;
+            test.flag--;
         }
-        b.p_card[i]=Cards_played[i];
-    }
-    for(i=0;i<13;i++){
-        b.c_num[i]=-1;
-    }
-    b.suit=local_suit;
-    b.num_user=player;
-    b.flag=0;
-    for(i=0;i<4;i++){
-        if(b.p_card[i]==0) b.flag++;
-    }
-    int card=-1,max=0,tour,result=0;
-    for(tour=0;tour<times;tour++){
-        memcpy(p1,p2, sizeof(b));
-        if(a.flag==4){
-            card = fpc();
-            a.num_user++;
-            a.flag--;
-        }
-        for(i=0;i<a.flag;i++,a.num_user++){
-            if(a.num_user==player){
-                card = pc();
+        for(j=0;j<test.flag;j++,test.num_user++){
+            if(test.num_user==num_user){
+                card = rp(0);
             }else{
-                pc();
+                rp(0);
             }
         }
-        if(cc(player)==1){
+        //time=(float)(clock()-start_simulate)/CLOCKS_PER_SEC;
+        if(cc(num_user)==1){
             win_num[card]++;
         }
+        //printf("Stimulation No.%d -- %d\n",i+1,card);
     }
-    for(i=0;i<13;i++){
+    for (i=0;i<13;i++){
         if(win_num[i]>max){
             max=win_num[i];
             result=i;
+            result_code=1;
         }
     }
-    persentage[player]=((float)max/(float)times)*100;
-    if (result==0){
-        memcpy(p1,p2, sizeof(b));
-        result=min_card(player);
+    if(result==-1){
+        p_test=memcpy(p_test,p_orig, sizeof(struct simulate));
+        result=min_card();
+        result_code=2;
     }
-    //printf("Simulation: %d\n\n",result);
+    c();
+    p_of_data[game_time]->card_simu[c_num[result]]=((float)max/(float)times);
+    per_devia[num_user]=p_of_data[game_time]->card_simu[c_num[result]];
+    if(print_func[0]) printf("Simulation: %d.%d\n\n",result_code,result);
+    // printf("Simulate %d times -- %.6fs\n",times,time);
     return result;
 }

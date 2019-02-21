@@ -59,45 +59,45 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/phinease/CLionProjects/bridge_ai_test
+CMAKE_SOURCE_DIR = /Users/phinease/CLionProjects/Bridge_data_analyse
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/bridge_ai_debug.dir
+# Target rules for target CMakeFiles/Bridge_data_analyse.dir
 
 # All Build rule for target.
-CMakeFiles/bridge_ai_debug.dir/all:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/depend
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target bridge_ai_debug"
-.PHONY : CMakeFiles/bridge_ai_debug.dir/all
+CMakeFiles/Bridge_data_analyse.dir/all:
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/depend
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target Bridge_data_analyse"
+.PHONY : CMakeFiles/Bridge_data_analyse.dir/all
 
 # Include target in all.
-all: CMakeFiles/bridge_ai_debug.dir/all
+all: CMakeFiles/Bridge_data_analyse.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/bridge_ai_debug.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bridge_ai_debug.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/bridge_ai_debug.dir/rule
+CMakeFiles/Bridge_data_analyse.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Bridge_data_analyse.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/Bridge_data_analyse.dir/rule
 
 # Convenience name for target.
-bridge_ai_debug: CMakeFiles/bridge_ai_debug.dir/rule
+Bridge_data_analyse: CMakeFiles/Bridge_data_analyse.dir/rule
 
-.PHONY : bridge_ai_debug
-
-# clean rule for target.
-CMakeFiles/bridge_ai_debug.dir/clean:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/clean
-.PHONY : CMakeFiles/bridge_ai_debug.dir/clean
+.PHONY : Bridge_data_analyse
 
 # clean rule for target.
-clean: CMakeFiles/bridge_ai_debug.dir/clean
+CMakeFiles/Bridge_data_analyse.dir/clean:
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/clean
+.PHONY : CMakeFiles/Bridge_data_analyse.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/Bridge_data_analyse.dir/clean
 
 .PHONY : clean
 

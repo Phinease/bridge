@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/phinease/CLionProjects/bridge_ai_test
+CMAKE_SOURCE_DIR = /Users/phinease/CLionProjects/Bridge_data_analyse
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/bridge_ai_test/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/phinease/CLionProjects/Bridge_data_analyse/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named bridge_ai_debug
+# Target rules for targets named Bridge_data_analyse
 
 # Build rule for target.
-bridge_ai_debug: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bridge_ai_debug
-.PHONY : bridge_ai_debug
+Bridge_data_analyse: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Bridge_data_analyse
+.PHONY : Bridge_data_analyse
 
 # fast build rule for target.
-bridge_ai_debug/fast:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/build
-.PHONY : bridge_ai_debug/fast
+Bridge_data_analyse/fast:
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/build
+.PHONY : Bridge_data_analyse/fast
 
 main.o: main.c.o
 
@@ -129,7 +129,7 @@ main.o: main.c.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/main.c.o
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -138,7 +138,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/main.c.i
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -147,7 +147,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) -f CMakeFiles/bridge_ai_debug.dir/build.make CMakeFiles/bridge_ai_debug.dir/main.c.s
+	$(MAKE) -f CMakeFiles/Bridge_data_analyse.dir/build.make CMakeFiles/Bridge_data_analyse.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -158,7 +158,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... bridge_ai_debug"
+	@echo "... Bridge_data_analyse"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
