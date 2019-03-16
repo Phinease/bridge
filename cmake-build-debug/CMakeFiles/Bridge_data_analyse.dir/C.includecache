@@ -6,19 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/phinease/CLionProjects/Bridge_data_analyse/ai.h
-stdlib.h
--
-stdio.h
--
-string.h
--
-time.h
--
-
 /Users/phinease/CLionProjects/Bridge_data_analyse/game.h
-ai.h
-/Users/phinease/CLionProjects/Bridge_data_analyse/ai.h
 
 /Users/phinease/CLionProjects/Bridge_data_analyse/main.c
 process.h

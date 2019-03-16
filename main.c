@@ -6,7 +6,7 @@ int data_check;
 
 int main(){
     srand(2);
-    int wrong;
+    int wrong,signal;
     for(int i=0;i<1000;i++){
         p_of_data[i]=NULL;
     }
@@ -24,18 +24,8 @@ int main(){
         main();
         return -1;
     }
-    printf("How many times would you like to play?\n");
-    printf("Considering the RAM,limited below 1000 times.\n");
-    scanf("%d",&run[1]);
-    while(run[1]<0 || run[1]>1000){
-        while ((wrong = getchar()) != EOF && wrong != '\n'){
-            ;
-        }
-        //system("clear");
-        printf("Wrong enter, retry.\n");
-        scanf("%d",&run[1]);
-    }
-    ask();
+    signal=debug_mode();
+    ask(signal);
     all();
     analyse();
     do{

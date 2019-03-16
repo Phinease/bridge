@@ -19,8 +19,8 @@ int yes;
 
 
 void all();
-void ask();
-void game_cercle();
+void ask(int signal);
+void game_circle();
 void analyse();
 void ask_data();
 
@@ -34,7 +34,7 @@ void all()
         //game_id=mysql_search();
         //game_id++;
         //printf("GAME ID: %d\n",game_id);
-        game_cercle();
+        game_circle();
         game_time++;
         //write_game();
     }
@@ -42,9 +42,50 @@ void all()
     //system("clear");
 }
 
-void ask()
+
+int debug_mode()
 {
+    int wrong,answer;
+    printf("Debugging?(0 for yes, 1 for no)\n");
+    scanf("%d",&answer);
+    while(answer<0 || answer>7){
+        while ((wrong = getchar()) != EOF && wrong != '\n'){
+            ;
+        }
+        printf("Wrong enter, retry.\n");
+        scanf("%d",&answer);
+    }
+    if(answer==0){
+        player_random[0]=2;
+        player_random[1]=1;
+        player_random[2]=2;
+        player_random[3]=1;
+        simulation_times=1000;
+        run[1]=1000;
+        print_func[0]=0;
+        print_func[1]=0;
+        print_func[2]=50;
+        return 0;
+    } else{
+        return 1;
+    }
+}
+
+void ask(int signal)
+{
+    if(signal==0) return;
     int i,j,wrong,all_random=0,attention=0;
+    printf("How many times would you like to play?\n");
+    printf("Considering the RAM,limited below 1000 times.\n");
+    scanf("%d",&run[1]);
+    while(run[1]<0 || run[1]>1000){
+        while ((wrong = getchar()) != EOF && wrong != '\n'){
+            ;
+        }
+        //system("clear");
+        printf("Wrong enter, retry.\n");
+        scanf("%d",&run[1]);
+    }
     printf("which player would you like it to be random?\n");
     printf("(5 for all random, 6 for all Monte-Carol)\n");
     printf("(7 for West-East Monte-Carol and South-North Random)\n");
@@ -115,7 +156,7 @@ void ask()
             scanf("%d",&warning);
         }
         if(warning==1){
-            ask();
+            ask(1);
             return;
         }
     }
@@ -145,13 +186,12 @@ void ask()
 }
 
 
-void game_cercle()
+void game_circle()
 {
     int i;
     initialization();
     free(p_of_data[game_time]);
     p_of_data[game_time]=(struct card_game_data*)malloc(sizeof(struct card_game_data));
-    if(p_of_data[game_time]==NULL) printf("No1.ERROR\n");
     deal();
     //system("clear");
     process++; main_suit=4;
@@ -172,14 +212,15 @@ void game_cercle()
     yes=win();
     if(print_func[0]==1) congratulation(yes);
     if(yes==0){
-        win_rate[0]++;
-        printf("NS win\tWE [%d]  NS [%d]\n",win_rate[1],win_rate[0]);
+        win_rate[0]+=2;
+        printf("NS win\tWE [%d]  NS [%d]  Game times [%d]\n",win_rate[1]/2,win_rate[0]/2,run[1]);
     }else if(yes==1){
-        win_rate[1]++;
-        printf("WE win\tWE [%d]  NS [%d]\n",win_rate[1],win_rate[0]);
+        win_rate[1]+=2;
+        printf("WE win\tWE [%d]  NS [%d]  Game times [%d]\n",win_rate[1]/2,win_rate[0]/2,run[1]);
     }else{
-        printf("No2.Error.");
-        system("read -p 'Press Enter to continue...'");
+        win_rate[0]++;
+        win_rate[1]++;
+        printf("Even  \tWE [%d]  NS [%d]  Game times [%d]\n",win_rate[1]/2,win_rate[0]/2,run[1]);
     }
 }
 
@@ -187,8 +228,8 @@ void game_cercle()
 void analyse()
 {
     printf("Result: Games: %d times\t ",run[1]);
-    printf("WE win rate: %.2f%%\t",100*(float)win_rate[1]/run[1]);
-    printf("NS win rate: %.2f%%\n",100*(float)win_rate[0]/run[1]);
+    printf("WE win rate: %.2f%%\t",100*(float)win_rate[1]/(run[1]*2));
+    printf("NS win rate: %.2f%%\n",100*(float)win_rate[0]/(run[1]*2));
     end_t=clock();
     total_t=(double)(end_t-start_t)/CLOCKS_PER_SEC;
     printf("This spends %5.4f seconds, %4.3fs per game.\n",total_t,total_t/run[1]);

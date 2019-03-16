@@ -23,7 +23,8 @@
  * -1 for all kinds is non-existence.
  */
 
-clock_t start_simulate, end_simulate; //time_counting
+//clock_t start_simulate, end_simulate;
+//time_counting variables
 
 struct simulate{
     int suit;
@@ -43,21 +44,25 @@ struct simulate *p_orig=&original, *p_test=&test;
 
 
 extern int Users_Nums[4][13],local_suit,Cards_played[4];
-extern int process;
+extern int User_Unknown[4][39];
+extern int process,game;
 extern int print_func[4];
 
 
 float per_devia[4]={0,0,0,0};
 int game_time=0;
-int c_num[13];
+int c_num_open[13];
+int c_num_close[39];
 
 
 int simulation(int times,int num_user);
 int random_player(int *p,int flag);
-void c();
+int c_open();
+int c_close();
 int cc(int num_user);
 int min_card();
-int rp(int flag);
+int rp_open(int flag);
+int rp_close(int flag);
 
 
 
@@ -99,31 +104,86 @@ int random_player (int *p,int flag){ //random num_user for the game
 }
 
 
-int rp(int flag)
+int rp_open(int flag)
 {
-    c();
     int nb_card=0,local_card=0;
     int i,result;
-    if(flag==1){ // flag - 1 means first to play
-        for(i=0;i<13;i++){
-            if(c_num[i]==-1) break;
-            nb_card++;
-        }
+    nb_card=c_open();
+    //printf("NOW random open. flag: %d\n",flag);
+    if(flag==1){ // flag 1 means first to play
         result=rand()%nb_card;
         //printf("Nb_card.%d\n",nb_card);
-        test.suit=c_num[result]%4;
-        test.c_played[test.num_user]=c_num[result];
+        test.suit=c_num_open[result]%4;
+        test.c_played[test.num_user]=c_num_open[result];
         return result;
     }
     else {
         for(i=0;i<13;i++){
-            if(c_num[i]%4==test.suit){
+            if(c_num_open[i]%4==test.suit){
+                local_card++;
+            }
+        }
+        //printf("local_card: %d\n",local_card);
+        nb_card=0;
+        for(i=0;i<13;i++){
+            if(c_num_open[i]%4<test.suit && c_num_open[i]%4!=-1){
+                nb_card++;
+            } else{
+                break;
+            }
+        }
+        //printf("nb_card: %d\n",nb_card);
+        if(local_card==0){
+            //printf("process: %d\n",process);
+            if(nb_card==0){
+                result=rand()%(13-process);
+            }else{
+                int temp,debug=0;
+                do{
+                    temp=rand()%(13-process);
+                    debug++;
+                    //printf("temp: %d\n",temp);
+                    if(debug>10) system("read -p 'Error...'");
+                }while (temp>nb_card && temp<(nb_card+local_card));
+                if(temp<nb_card){
+                    result=rand()%nb_card;
+                }else{
+                    result=rand()%(temp-nb_card-local_card+1)+(nb_card+local_card);
+                }
+            }
+        }else{
+            result=nb_card+(rand()%local_card);
+        }
+        //rintf("result: %d\n",result);
+        //printf("\n2.%d %d\n",nb_card,local_card);
+        test.c_played[test.num_user]=c_num_open[result];
+        return result;
+    }
+}
+
+
+int rp_close(int flag)
+{
+    //printf("NOW random close.\n");
+    int nb_card=0,local_card=0;
+    int i,result;
+    nb_card=c_close();
+    if(flag==1){ // flag - 1 means first to play
+        result=rand()%nb_card;
+        //printf("Nb_card.%d\n",nb_card);
+        test.suit=c_num_close[result]%4;
+        test.c_played[test.num_user]=c_num_close[result];
+        return result;
+    }
+    else {
+        for(i=0;i<39;i++){
+            if(c_num_close[i]%4==test.suit){
                 local_card++;
             }
         }
         nb_card=0;
-        for(i=0;i<13;i++){
-            if(c_num[i]<test.suit){
+        for(i=0;i<39;i++){
+            if(c_num_close[i]%4<test.suit){
                 nb_card++;
             } else{
                 break;
@@ -131,32 +191,58 @@ int rp(int flag)
         }
         if(local_card==0){
             if(nb_card==0){
-                result=rand()%(13-process);
+                result=rand()%(39-process*3);
             }else{
-                result=(rand()%nb_card);
+                int temp;
+                do{
+                    temp=rand()%(39-process*3);
+                }while (temp>nb_card && temp<(nb_card+local_card));
+                if(temp<nb_card){
+                    result=rand()%nb_card;
+                }else{
+                    result=rand()%(temp-nb_card-local_card+1)+(nb_card+local_card);
+                }
             }
         }else{
             result=nb_card+(rand()%local_card);
         }
         //printf("\n2.%d %d\n",nb_card,local_card);
-        test.c_played[test.num_user]=c_num[result];
+        test.c_played[test.num_user]=c_num_close[result];
         return result;
     }
 }
 
 
-void c() //calling cards
+int c_open() //calling cards
 {
     test.num_user%=4;
     int i,j=0;
     for(i=0;i<13;i++){
-        c_num[i]=-1;
+        c_num_open[i]=-1;
     }
     for(i=0;i<13;i++){
         if(Users_Nums[test.num_user][i]!=-1){
-            c_num[j++]=Users_Nums[test.num_user][i];
+            c_num_open[j++]=Users_Nums[test.num_user][i];
         }
     }
+    //printf("Call cards open success. Return %d cards.\n",j);
+    return j;
+}
+
+int c_close()
+{
+    test.num_user%=4;
+    int i,j=0;
+    for(i=0;i<13;i++){
+        c_num_close[i]=-1;
+    }
+    for(i=0;i<39;i++){
+        if(User_Unknown[test.num_user][i]!=-1){
+            c_num_close[j++]=User_Unknown[test.num_user][i];
+        }
+    }
+    //printf("Call cards closed success. Return %d cards.\n",j);
+    return j;
 }
 
 
@@ -200,7 +286,7 @@ int min_card() //get the min card
         if(Users_Nums[test.num_user][i]%4==test.suit && test.suit!=-1) count++;
     }
     min=13;
-    c();
+    c_open();
     if(count==0){
         for(i=0;i<13;i++){
             if(Users_Nums[test.num_user][i]!=-1 && Users_Nums[test.num_user][i]/4<min){
@@ -210,16 +296,15 @@ int min_card() //get the min card
         }
         //printf("Minimize non local\n");
         for(i=0;i<13;i++){
-            if(c_num[i]==count){
+            if(c_num_open[i]==count){
                 return i;
             }
         }
-        printf("Error 7.\n");
         return -1;
     }else{
         for(i=0;i<13;i++){
-            if(c_num[i]/4<min && c_num[i]%4==test.suit){
-                min=c_num[i]/4;
+            if(c_num_open[i]/4<min && c_num_open[i]%4==test.suit){
+                min=c_num_open[i]/4;
                 result=i;
                 //printf("Now last result is %d\t",result);
             }
@@ -240,6 +325,7 @@ int min_card() //get the min card
 
 int simulation(int times,int num_user) { //simulation of Monte_carol
     //float time;
+    //printf("Stimulation start.\n");
     int result_code=0;
     int win_num[13]={0};
     int i,j;
@@ -255,15 +341,20 @@ int simulation(int times,int num_user) { //simulation of Monte_carol
         p_test=memcpy(p_test,p_orig, sizeof(struct simulate));
         //start_simulate=clock();
         if(test.flag==4){
-            card = rp(1);
+            card = rp_open(1);
             test.num_user++;
             test.flag--;
         }
         for(j=0;j<test.flag;j++,test.num_user++){
             if(test.num_user==num_user){
-                card = rp(0);
+                card = rp_open(0);
             }else{
-                rp(0);
+                if(game==2){
+                    rp_open(0);
+                } else{
+                    rp_close(0);
+                    //printf("Random close success.\n");
+                }
             }
         }
         //time=(float)(clock()-start_simulate)/CLOCKS_PER_SEC;
@@ -284,9 +375,10 @@ int simulation(int times,int num_user) { //simulation of Monte_carol
         result=min_card();
         result_code=2;
     }
-    c();
-    p_of_data[game_time]->card_simu[c_num[result]]=((float)max/(float)times);
-    per_devia[num_user]=p_of_data[game_time]->card_simu[c_num[result]];
+    test.num_user=num_user;
+    c_open();
+    p_of_data[game_time]->card_simu[c_num_open[result]]=((float)max/(float)times);
+    per_devia[num_user]=p_of_data[game_time]->card_simu[c_num_open[result]];
     if(print_func[0]) printf("Simulation: %d.%d\n\n",result_code,result);
     // printf("Simulate %d times -- %.6fs\n",times,time);
     return result;
