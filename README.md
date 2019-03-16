@@ -6,11 +6,10 @@ Current step: Monte_Carol
 How to install:
 
       cd ./bridge_ai_***
-
-      cmake ./
-
-      make ./
-
+      mkdir make
+      cd ./make
+      cmake ..
+      make
       ./bridge_***
 
 Or you can run directly the exec file if it's possible.
