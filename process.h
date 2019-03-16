@@ -8,6 +8,7 @@
 
 
 #include "game.h"
+#include <time.h>
 
 
 extern int run[2];
@@ -56,6 +57,7 @@ int debug_mode()
         scanf("%d",&answer);
     }
     if(answer==0){
+        srand(1);
         player_random[0]=2;
         player_random[1]=1;
         player_random[2]=2;

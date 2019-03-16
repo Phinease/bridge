@@ -5,7 +5,7 @@ int data_check;
 
 
 int main(){
-    srand(2);
+    srand(time(NULL));
     int wrong,signal;
     for(int i=0;i<1000;i++){
         p_of_data[i]=NULL;
