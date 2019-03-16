@@ -16,7 +16,11 @@ Or you can run directly the exec file if it's possible.
 
 
 PS: DEBUG MOD is defaut for fast test, it has the fallowing parameters:
-      \n1000 games with West and East players as Monte-Carol algorithm, South and North Players as Random
-      \nThe seed of random as 1
-      \nNo procedure and deviation check (Even rate as 50% for final statistic)
-      \nSampling for 1000 times for a hand
+
+      1000 games with West and East players as Monte-Carol algorithm, South and North Players as Random
+      
+      The seed of random as 1
+      
+      No procedure and deviation check (Even rate as 50% for final statistic)
+      
+      Sampling for 1000 times for a hand
