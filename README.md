@@ -1,5 +1,5 @@
-# bridge_ai_***
-Projet étoilé L1 (Université Paris Descartes) du groupe CIBIER et CHEN
+# bridge_***
+Projet étoilé L1 (Université Paris Descartes) du CHEN
 
 Current step: Monte_Carol
 
