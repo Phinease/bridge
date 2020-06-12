@@ -1,4 +1,4 @@
-# bridge_***
+# Simple AI for Brige game
 Projet étoilé L1 (Université Paris Descartes) du CHEN
 
 Current step: Monte_Carol
