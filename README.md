@@ -1,7 +1,7 @@
 # Simple AI for Brige game
-Projet étoilé L1 (Université Paris Descartes) du CHEN
+Projet étoilé L1 (Université Paris Descartes) du CHEN Shuangrui
 
-Current step: Monte_Carol
+Final step: Monte_Carol
 
 How to install:
 
@@ -12,7 +12,7 @@ How to install:
       make
       ./bridge_***
 
-Or you can run directly the exec file if it's possible.
+Or you can run directly the exec file if it's workable.
 
 
 PS: DEBUG MOD is defaut for fast test, it has the fallowing parameters:
