@@ -1,5 +1,6 @@
 # Simple AI for Brige game
 Projet étoilé L1 (Université Paris Descartes) du CHEN Shuangrui
+Prof Bruno Bouzy
 
 Final step: Monte_Carol
 
